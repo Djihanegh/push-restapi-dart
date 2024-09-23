@@ -4,9 +4,14 @@ import 'package:push_restapi_dart/push_restapi_dart.dart';
 
 import '../__lib.dart';
 
-class ChatsTab extends StatelessWidget {
+class ChatsTab extends StatefulWidget {
   const ChatsTab({super.key});
 
+  @override
+  State<ChatsTab> createState() => _ChatsTabState();
+}
+
+class _ChatsTabState extends State<ChatsTab> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -22,8 +27,7 @@ class ChatsTab extends StatelessWidget {
               Tab(
                 child: Consumer(
                   builder: (context, ref, child) {
-                    final count =
-                        ref.watch(requestsProvider).requestsList?.length ?? 0;
+                    final count = ref.watch(requestsProvider).requestsList?.length ?? 0;
 
                     return Row(
                       children: [
@@ -119,8 +123,7 @@ class ConversationsTab extends StatelessWidget {
                         itemCount: spaces.length,
                         itemBuilder: (context, index) {
                           final item = spaces[index];
-                          final image = item.groupInformation?.groupImage ??
-                              item.profilePicture;
+                          final image = item.groupInformation?.groupImage ?? item.profilePicture;
 
                           return InkWell(
                             onTap: () {
@@ -155,9 +158,7 @@ class ConversationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(6),
-      decoration: BoxDecoration(
-          border: Border.all(color: pushColor),
-          borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(border: Border.all(color: pushColor), borderRadius: BorderRadius.circular(16)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

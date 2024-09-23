@@ -347,7 +347,7 @@ class Space {
       throw Exception(PushAPI.ensureSignerMessage());
     }
 
-    return chatInstance.accept(target: spaceId);
+    return chatInstance.accept(target: spaceId , isGroup: false); // TODO
   }
 
   Future<String?> reject({required String spaceId}) async {

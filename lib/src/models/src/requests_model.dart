@@ -34,20 +34,23 @@ class Feeds {
       this.groupInformation});
 
   Feeds.fromJson(Map<String, dynamic> json) {
-    chatId = json['chatId'];
-    about = json['about'];
-    did = json['did'];
-    intent = json['intent'];
-    intentSentBy = json['intentSentBy'];
-    intentTimestamp = json['intentTimestamp'];
-    publicKey = json['publicKey'];
-    profilePicture = json['profilePicture'];
-    threadhash = json['threadhash'];
-    wallets = json['wallets'];
-    combinedDID = json['combinedDID'];
-    name = json['name'];
+    chatId = json['chatId'] ?? '';
+    about = json['about'] ?? '';
+    did = json['did'] ?? '';
+    intent = json['intent'] ?? '';
+    intentSentBy = json['intentSentBy'] ?? '';
+    intentTimestamp = json['intentTimestamp'] ?? '';
+    publicKey = json['publicKey'] ?? '';
+    profilePicture = json['profilePicture'] ?? '';
+    threadhash = json['threadhash'] ?? '';
+    wallets = json['wallets'] ?? '';
+    combinedDID = json['combinedDID'] ?? '';
+    name = json['name'] ?? '';
     if (json['groupInformation'] != null) {
       groupInformation = GroupDTO.fromJson(json['groupInformation']);
+    }
+    if (json['msg'] != null) {
+      msg = Message.fromJson(json['msg']);
     }
   }
 

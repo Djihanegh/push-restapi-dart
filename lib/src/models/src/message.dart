@@ -72,23 +72,23 @@ class Message {
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      fromCAIP10: json['fromCAIP10'],
-      toCAIP10: json['toCAIP10'],
-      fromDID: json['fromDID'],
-      toDID: json['toDID'],
-      messageType: json['messageType'],
-      messageContent: json['messageContent'],
+      fromCAIP10: json['fromCAIP10'] ?? '',
+      toCAIP10: json['toCAIP10'] ?? '',
+      fromDID: json['fromDID'] ?? '',
+      toDID: json['toDID'] ?? '',
+      messageType: json['messageType'] ?? '',
+      messageContent: json['messageContent'] ?? '',
       messageObj: json['messageObj'],
-      signature: json['signature'],
-      sigType: json['sigType'],
-      link: json['link'],
+      signature: json['signature'] ?? '',
+      sigType: json['sigType'] ?? '',
+      link: json['link'] ?? '',
       timestamp: json['timestamp'],
-      encType: json['encType'],
-      encryptedSecret: json['encryptedSecret'],
-      deprecated: json['deprecated'],
-      deprecatedCode: json['deprecatedCode'],
-      verificationProof: json['verificationProof'],
-      sessionKey: json['sessionKey'],
+      encType: json['encType'] ?? '',
+      encryptedSecret: json['encryptedSecret'] ?? '',
+      deprecated: json['deprecated'] ?? false,
+      deprecatedCode: json['deprecatedCode'] ?? '',
+      verificationProof: json['verificationProof'] ?? '',
+      sessionKey: json['sessionKey'] ?? '',
     );
   }
 
@@ -232,6 +232,7 @@ class MessageWithCID {
   }
 
   static MessageWithCID fromJson(Map<String, dynamic> json) {
+    print(json);
     return MessageWithCID(
       cid: json['cid'],
       chatId: json['chatId'],

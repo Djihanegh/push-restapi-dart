@@ -19,7 +19,7 @@ Future<MessageWithCID?> send(ChatSendOptions options) async {
     privateKey: options.pgpPrivateKey,
   );
 
-  final isGroup = !isValidETHAddress(computedOptions.to);
+  final isGroup = isGroupChatId(computedOptions.to); // !isValidETHAddress(computedOptions.to);
   final group = isGroup ? await getGroupInfo(chatId: computedOptions.to) : null;
 
   final conversationHashResponse = await conversationHash(

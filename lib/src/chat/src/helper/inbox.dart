@@ -10,7 +10,9 @@ Future<List<Feeds>> getInboxList({
   for (var feed in feedsList) {
     Message? message;
     if (feed.threadhash != null) {
-      message = await getCID(cid: feed.threadhash!);
+      if(feed.threadhash != null && feed.threadhash != '') {
+        message = await getCID(cid: feed.threadhash!);
+      }
     }
 
     // This is for groups that are created without any message

@@ -35,25 +35,20 @@ class GroupInfoDTO {
 
   factory GroupInfoDTO.fromJson(Map<String, dynamic> json) {
     return GroupInfoDTO(
-      groupName: json['groupName'],
-      groupImage: json['groupImage'],
-      groupDescription: json['groupDescription'],
-      isPublic: json['isPublic'],
-      groupCreator: json['groupCreator'],
-      chatId: json['chatId'],
-      scheduleAt: json['scheduleAt'] != null
-          ? DateTime.parse(json['scheduleAt'])
-          : null,
-      scheduleEnd: json['scheduleEnd'] != null
-          ? DateTime.parse(json['scheduleEnd'])
-          : null,
-      groupType: json['groupType'],
-      status:
-          json['status'] != null ? chatStatusFromString(json['status']) : null,
+      groupName: json['groupName'] ?? '',
+      groupImage: json['groupImage'] ?? '',
+      groupDescription: json['groupDescription'] ?? '',
+      isPublic: json['isPublic'] ?? false,
+      groupCreator: json['groupCreator'] ?? '',
+      chatId: json['chatId'] ?? '',
+      scheduleAt: json['scheduleAt'] != null ? DateTime.parse(json['scheduleAt']) : null,
+      scheduleEnd: json['scheduleEnd'] != null ? DateTime.parse(json['scheduleEnd']) : null,
+      groupType: json['groupType'] ?? '',
+      status: json['status'] != null ? chatStatusFromString(json['status']) : null,
       rules: json['rules'],
-      meta: json['meta'],
-      sessionKey: json['sessionKey'],
-      encryptedSecret: json['encryptedSecret'],
+      meta: json['meta'] ?? '',
+      sessionKey: json['sessionKey'] ?? '',
+      encryptedSecret: json['encryptedSecret'] ?? '',
     );
   }
 

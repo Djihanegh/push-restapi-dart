@@ -6,6 +6,7 @@ Future<String?> approve({
   Signer? signer,
   String? pgpPrivateKey,
   String status = 'Approved',
+  bool group = false
 }) async {
   try {
     account ??= getCachedWallet()?.address;
@@ -22,7 +23,7 @@ Future<String?> approve({
       throw Exception('Private Key is required.');
     }
 
-    final isGroup = !isValidETHAddress(senderAddress);
+    final isGroup =  group;//!isValidETHAddress(senderAddress);
 
     final connectedUser = await getConnectedUserV2(
       wallet: wallet,
@@ -50,21 +51,22 @@ Future<String?> approve({
     var sigType = 'pgp';
 
     if (isGroup) {
-      final group = await getGroupInfo(chatId: senderAddress);
-      if (!group.isPublic) {
+      final groupInfo = await getGroupInfo(chatId: senderAddress);
+      if (!groupInfo.isPublic) {
         /**
          * Secret Key Gen Override has no effect if an encrypted secret key is already present
          */
-        if (group.encryptedSecret != null) {
+        if (groupInfo.encryptedSecret != null) {
           sigType = 'pgpv2';
           final secretKey = generateRandomSecret(15);
 
           final groupMembers = await getAllGroupMembersPublicKeys(
-            chatId: group.chatId,
+            chatId: groupInfo.chatId,
           );
 
           final publickKeys = groupMembers.map((e) => e.publicKey).toList();
-          publickKeys.add(connectedUser.publicKey!);
+        //  if(publickKeys.contains(connectedUser.publicKey))
+         // publickKeys.add(connectedUser.publicKey!);
           encryptedSecret =
               await pgpEncrypt(plainText: secretKey, keys: publickKeys);
         }

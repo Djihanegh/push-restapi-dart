@@ -191,7 +191,7 @@ Future<IEncryptedRequest> getEncryptedRequestCore({
       // Private Groups
 
       // 1. Private Groups with session keys
-      if (group.sessionKey != null && group.encryptedSecret != null) {
+      if (group.sessionKey != null && group.sessionKey != '' && group.encryptedSecret != null && group.encryptedSecret != '') {
         final cipherText = await aesEncrypt(
           plainText: message,
           secretKey: secretKey,
@@ -204,7 +204,7 @@ Future<IEncryptedRequest> getEncryptedRequestCore({
         return IEncryptedRequest(
           message: cipherText,
           encryptionType: 'pgpv1:group',
-          aesEncryptedSecret: '',
+          aesEncryptedSecret: secretKey, // joujou
           signature: signature,
         );
       } else {

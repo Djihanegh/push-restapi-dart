@@ -14,13 +14,16 @@ Future<SendMessagePayload> sendMessagePayloadCore({
   required bool isGroup,
 }) async {
   late String secretKey;
-  if (isGroup && group?.encryptedSecret != null && group?.sessionKey != null) {
-    secretKey = await pgpDecrypt(
-        cipherText: group!.encryptedSecret!,
-        privateKeyArmored: senderConnectedUser.privateKey!);
+  if (isGroup &&
+      group?.encryptedSecret != null &&
+      group?.sessionKey != null &&
+      group?.encryptedSecret != '' &&
+      group?.sessionKey != '') {
+    secretKey =
+        await pgpDecrypt(cipherText: group!.encryptedSecret!, privateKeyArmored: senderConnectedUser.privateKey!);
   } else {
     secretKey = generateRandomSecret(15);
-  }
+ }
 
   final encryptedMessageContentData = await getEncryptedRequestCore(
     receiverAddress: receiverAddress,
@@ -32,8 +35,7 @@ Future<SendMessagePayload> sendMessagePayloadCore({
   );
 
   final encryptedMessageContent = encryptedMessageContentData.message;
-  final deprecatedSignature =
-      removeVersionFromPublicKey(encryptedMessageContentData.signature);
+  final deprecatedSignature = removeVersionFromPublicKey(encryptedMessageContentData.signature);
 
   final encryptedMessageObjData = await getEncryptedRequestCore(
     receiverAddress: receiverAddress,
@@ -46,8 +48,7 @@ Future<SendMessagePayload> sendMessagePayloadCore({
 
   final encryptedMessageObj = encryptedMessageObjData.message;
   final encryptionType = encryptedMessageObjData.encryptionType;
-  final encryptedMessageObjSecret =
-      removeVersionFromPublicKey(encryptedMessageObjData.aesEncryptedSecret);
+  final encryptedMessageObjSecret = removeVersionFromPublicKey(encryptedMessageObjData.aesEncryptedSecret);
 
   return SendMessagePayload(
     fromDID: walletToPCAIP10(senderAddress!),
@@ -55,9 +56,7 @@ Future<SendMessagePayload> sendMessagePayloadCore({
     fromCAIP10: walletToPCAIP10(senderAddress),
     toCAIP10: !isGroup ? walletToPCAIP10(receiverAddress) : group?.chatId ?? '',
     messageContent: encryptedMessageContent,
-    messageObj: encryptionType == 'PlainText'
-        ? messageObj?.toJson()
-        : encryptedMessageObj,
+    messageObj: encryptionType == 'PlainText' ? messageObj?.toJson() : encryptedMessageObj,
     messageType: messageType,
     signature: deprecatedSignature,
     verificationProof: "pgp:$deprecatedSignature",

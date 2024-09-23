@@ -33,6 +33,7 @@ class Chat {
   }
 
   late final UserAPI _userAPI;
+
   bool get _hasSigner => _signer != null;
 
   late final GroupAPI group;
@@ -117,8 +118,7 @@ class Chat {
     return PUSH_CHAT.send(options);
   }
 
-  Future<List<Message>> decrypt(
-      {required List<Message> messagePayloads}) async {
+  Future<List<Message>> decrypt({required List<Message> messagePayloads}) async {
     if (!_hasSigner) {
       throw Exception(PushAPI.ensureSignerMessage());
     }
@@ -129,16 +129,12 @@ class Chat {
     );
   }
 
-  Future<String?> accept({required String target}) async {
+  Future<String?> accept({required String target, required bool isGroup}) async {
     if (!_hasSigner) {
       throw Exception(PushAPI.ensureSignerMessage());
     }
     return PUSH_CHAT.approve(
-      senderAddress: target,
-      account: _account,
-      pgpPrivateKey: _decryptedPgpPvtKey,
-      signer: _signer,
-    );
+        senderAddress: target, account: _account, pgpPrivateKey: _decryptedPgpPvtKey, signer: _signer, group: isGroup);
   }
 
   Future<String?> reject({required String target}) async {
@@ -170,8 +166,7 @@ class Chat {
       user.profile?.blockedUsersList = [];
     }
 
-    user.profile?.blockedUsersList =
-        <String>{...user.profile!.blockedUsersList!, ...users}.toList();
+    user.profile?.blockedUsersList = <String>{...user.profile!.blockedUsersList!, ...users}.toList();
 
     if (_decryptedPgpPvtKey == null) {
       throw Exception(PushAPI.ensureSignerMessage());
@@ -205,12 +200,10 @@ class Chat {
       return user;
     }
 
-    final userDIDs =
-        await Future.wait(users.map((e) async => await getUserDID(address: e)));
+    final userDIDs = await Future.wait(users.map((e) async => await getUserDID(address: e)));
 
-    user.profile!.blockedUsersList = user.profile!.blockedUsersList!
-        .where((element) => !userDIDs.contains(element))
-        .toList();
+    user.profile!.blockedUsersList =
+        user.profile!.blockedUsersList!.where((element) => !userDIDs.contains(element)).toList();
 
     return PUSH_USER.profileUpdate(
       pgpPrivateKey: _decryptedPgpPvtKey!,
@@ -382,8 +375,7 @@ class GroupAPI {
     var membersToRemove = <String>[];
 
     for (var account in accounts) {
-      final status =
-          await PUSH_CHAT.getGroupMemberStatus(chatId: chatId, did: account);
+      final status = await PUSH_CHAT.getGroupMemberStatus(chatId: chatId, did: account);
       if (status.isAdmin) {
         adminsToRemove.add(account);
       } else {
@@ -554,8 +546,7 @@ class GroupParticipantsAPI {
     required String chatId,
     required String accountId,
   }) async {
-    final status =
-        await PUSH_CHAT.getGroupMemberStatus(chatId: chatId, did: accountId);
+    final status = await PUSH_CHAT.getGroupMemberStatus(chatId: chatId, did: accountId);
     return ParticipantStatus(
       pending: status.isPending,
       role: status.isAdmin ? 'ADMIN' : 'MEMBER',

@@ -30,7 +30,7 @@ Future<List<Feeds>?> chats({
       path: '/v1/chat/users/$userDID/chats?page=$page&limit=$limit',
     );
 
-    if (result == null || result['chats'] == null) {
+    if (result == null || result['chats'] == null || result is String) {
       return null;
     }
 

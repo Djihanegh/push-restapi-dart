@@ -96,7 +96,7 @@ Future runChatClassUseCases() async {
   // -------------------------------------------------------------------
   log('PushAPI.chat.accept');
   final bobAcceptsRequest =
-      await userBob.chat.accept(target: wallet1Signer.getAddress());
+      await userBob.chat.accept(target: wallet1Signer.getAddress() , isGroup: false);
   log(bobAcceptsRequest);
   await delay(2000); // Delay added to log the events in order
   log('PushAPI.chat.accept | Response - 200 OK\n\n');

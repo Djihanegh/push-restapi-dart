@@ -32,6 +32,8 @@ bool isValidETHAddress(String address) {
   return isAddress(address);
 }
 
+
+
 bool isValidNFTCAIP10Address(String realCAIP10) {
   final walletComponent = realCAIP10.split(':');
   if (double.tryParse(walletComponent[1]) == null) return false;

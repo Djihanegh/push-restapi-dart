@@ -34,8 +34,7 @@ class _ChatRequestsTabState extends ConsumerState<ChatRequestsTab> {
             itemCount: requestsList.length,
             itemBuilder: (context, index) {
               final item = requestsList[index];
-              final image =
-                  item.groupInformation?.groupImage ?? item.profilePicture;
+              final image = item.groupInformation?.groupImage ?? item.profilePicture;
 
               return InkWell(
                   onTap: () {
@@ -54,12 +53,13 @@ class _ChatRequestsTabState extends ConsumerState<ChatRequestsTab> {
   }
 
   PushAPI get pushUser => ref.read(accountProvider).pushUser!;
+
   onAccetRequests(String senderAddress) async {
     try {
-      showLoadingDialog(context);
-      final result = await pushUser.chat.accept(target: senderAddress);
+    //  showLoadingDialog(context);
+      final result = await pushUser.chat.accept(target: senderAddress, isGroup: false); // TODO
       print('onAccetRequests: $result');
-      pop(context);
+   //   pop(context);
       showMyDialog(
         context: context,
         title: 'Approve Request',
@@ -67,12 +67,12 @@ class _ChatRequestsTabState extends ConsumerState<ChatRequestsTab> {
       );
     } catch (e) {
       print('onAccetRequests: Errors $e');
+  //    pop(context);
       showMyDialog(
         context: context,
         title: 'Approve Request Error',
         message: '$e',
       );
-      pop(context);
     }
 
     ref.read(requestsProvider).loadRequests();
